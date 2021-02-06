@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>星辰の廻廊 移動処理</title>
+    </head>
+    <body>
+
+        <table id="table" border="1" style="margin-top:20px">
+            <tr>
+                <th>探索者の場所</th>
+                <th>イオドの場所</th>
+            </tr>
+            <tr>
+                <td>1(スタート地点)</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <button onclick="Player_move()">探索者が移動</button>
+        <button onclick="only_IOD_move()">イオドのみ移動</button>
+        <p>①最初の３ターンは探索者の移動を使用する。<br>
+           ②３ターン以降に探索者全員が1回の技能を使用した場合、イオドのみ移動を1回使用する。<br>
+           ③探索者が二手に分かれた場合は頑張れ。このツールではそこまで対応させていない。<br>
+        </p>
+
+
+        <script>
+            let counter = 0
+            let vorvados = 0
+            let now_players = 1
+
+            const Player_move = () =>
+            {
+                let player = 0
+                
+                do {
+                    player = Math.round(Math.random()*6) + 1 - vorvados
+                } 
+                while(player == now_players || player == 0)
+
+                if(player == 7) vorvados = 1
+                now_players = player
+
+                const IOD = IOD_move()
+                const tr = (player !== IOD) ? `<tr>` : `<tr style="color: #B3424A">`
+                document.getElementById("table").insertAdjacentHTML('beforeend', `${tr}<td>${player}</td><td>${IOD}</td><tr>`)
+            }
+
+            const only_IOD_move = () => 
+            {
+                const IOD = IOD_move()
+
+                const tr = (now_players !== IOD) ? `<tr>` : `<tr style="color: #B3424A">`
+                document.getElementById("table").insertAdjacentHTML('beforeend', `${tr}<td>${now_players}</td><td>${IOD}</td><tr>`)
+
+            }
+
+            const IOD_move = () =>
+            {
+                counter++
+                if(counter < 4) return ""
+                return Math.round(Math.random()*5) + 1
+            }
+
+
+        </script>
+    </body>
+</html>
